@@ -13,20 +13,6 @@ namespace FlightRadar.Models
         public float Latitude { get; set; }
         public float AMSL { get; set; }
         public string CountryISO { get; set; }
-        
-        public Airport(string[] values)
-        {
-            if (values.Length < 8)
-                throw new ArgumentException("Invalid number of values for creating Airport object.");
-            
-            ID = ulong.Parse(values[1]);
-            Name = values[2];
-            Code = values[3];
-            Longitude = Parser.FloatParse(values[4]);
-            Latitude = Parser.FloatParse(values[5]);
-            AMSL = Parser.FloatParse(values[6]);
-            CountryISO = values[7];
-        }
 
         public override string ToString()
         {

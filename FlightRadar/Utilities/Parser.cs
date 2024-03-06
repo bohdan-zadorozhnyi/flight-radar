@@ -1,3 +1,5 @@
+using System.Globalization;
+using FlightRadar.Models;
 namespace FlightRadar.Utilities;
 
 public class Parser
@@ -7,21 +9,19 @@ public class Parser
         if (string.IsNullOrEmpty(floatValue))
             return 0f;
         
-        floatValue = floatValue.Replace('.', ',');
+        CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 
-        return float.Parse(floatValue);
+        return float.Parse(floatValue, cultureInfo);
     }
     
-    public static ulong[] UlongArrayParse(string ids)
+    public static List<ulong> UlongListParse(string ids)
     {
-        if (string.IsNullOrEmpty(ids))
-            return new ulong[0];
-
+        List<ulong> result = new List<ulong>();
+        
         var idStrings = ids.Trim('[', ']').Split(';');
-        var result = new ulong[idStrings.Length];
-        for (int i = 0; i < idStrings.Length; i++)
+        foreach (var idString in idStrings)
         {
-            result[i] = ulong.Parse(idStrings[i]);
+            result.Add(ulong.Parse(idString));
         }
         return result;
     }

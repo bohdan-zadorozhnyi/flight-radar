@@ -14,27 +14,8 @@ public class Flight : IBaseObject
     public float Latitude { get; set; }
     public float AMSL { get; set; }
     public ulong PlaneID { get; set; }
-    public ulong[] CrewIDs { get; set; }
-    public ulong[] LoadIDs { get; set; }
-    
-    public Flight(string[] values)
-    {
-        if (values.Length < 12)
-            throw new ArgumentException("Invalid number of values for creating Flight object.");
-
-        ID = ulong.Parse(values[1]);
-        OriginID = ulong.Parse(values[2]);
-        TargetID = ulong.Parse(values[3]);
-        TakeoffTime = values[4];
-        LandingTime = values[5];
-        Longitude = Parser.FloatParse(values[6]);
-        Latitude = Parser.FloatParse(values[7]);
-        AMSL = Parser.FloatParse(values[8]);
-        PlaneID = ulong.Parse(values[9]);
-
-        CrewIDs = Parser.UlongArrayParse(values[10]);
-        LoadIDs = Parser.UlongArrayParse(values[11]);
-    }
+    public List<ulong> CrewIDs { get; set; }
+    public List<ulong> LoadIDs { get; set; }
 
     public override string ToString()
     {

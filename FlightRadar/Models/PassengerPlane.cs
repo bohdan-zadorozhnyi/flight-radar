@@ -11,21 +11,6 @@ public class PassengerPlane : IBaseObject
     public ushort FirstClassSize { get; set; }
     public ushort BusinessClassSize { get; set; }
     public ushort EconomyClassSize { get; set; }
-    
-    public PassengerPlane(string[] values)
-    {
-        if (values.Length < 8)
-            throw new ArgumentException("Invalid number of values for creating PassengerPlane object.");
-        
-        ID = ulong.Parse(values[1]);
-        Serial = values[2];
-        CountryISO = values[3];
-        Model = values[4];
-        FirstClassSize = ushort.Parse(values[5]);
-        BusinessClassSize = ushort.Parse(values[6]);
-        EconomyClassSize = ushort.Parse(values[7]);
-    }
-
     public override string ToString()
     {
         return $"PassengerPlane ID: {ID}, Serial: {Serial}, Country ISO: {CountryISO}, Model: {Model}, " +
