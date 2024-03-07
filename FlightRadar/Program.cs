@@ -1,4 +1,5 @@
-﻿using FlightRadar.Utilities;
+﻿using FlightRadar.Interfaces;
+using FlightRadar.Utilities;
 
 namespace FlightRadar
 { 
@@ -6,31 +7,26 @@ namespace FlightRadar
     {
         static void Main(string[] args)
         {
-            string filePath = "../../../Data/example_data.ftr.txt";
-            
             try
             {
-                string data = File.ReadAllText(filePath);
+                string filePath = "../../../Data/example_data.ftr.txt";
+
+                Console.WriteLine("Enter minimum delay:");
+                int minDelay = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Enter maximum delay:");
+                int maxDelay = int.Parse(Console.ReadLine());
+
+                List<IBaseObject> data = new List<IBaseObject>();
+
+                NSSDataLoader.RunNSSDataLoader(filePath, minDelay, maxDelay, data);
                 
-                var dataFactory = new DataFactory();
-                var dataLoader = new DataLoader(dataFactory);
-                
-                var dataList = dataLoader.LoadData(data);
-                
-                var jsonSerializer = new JSONSerializer();
-                string jsonFilePath = "data.json";
-                string serializedData = jsonSerializer.Serialize(dataList);
-                File.WriteAllText(jsonFilePath, serializedData);
-                
-                Console.WriteLine("Data serialized and saved to JSON file successfully.");
-            }
-            catch (FileNotFoundException)
-            {
-                Console.WriteLine($"File '{filePath}' not found.");
+                CommandsProcessor commandProcessor = new CommandsProcessor(data);
+                commandProcessor.ProcessCommands();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"Error occurred: {ex.Message}");
             }
         }
     }

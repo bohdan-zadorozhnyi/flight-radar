@@ -1,4 +1,6 @@
+using System.Text;
 using FlightRadar.Interfaces;
+using NetworkSourceSimulator;
 namespace FlightRadar.Utilities;
 
 public class DataLoader : IDataLoader
@@ -28,5 +30,16 @@ public class DataLoader : IDataLoader
         }
 
         return dataList;
+    }
+    
+    public static void LoadMessage(List<IBaseObject> dataList, Message message)
+    {
+        byte[] bytes = message.MessageBytes;
+        if (bytes.Length <= 0)
+            throw new ArgumentException("Message cannot be empty.");
+
+        var dataFactory = new DataFactory();
+        var obj = dataFactory.CreateObject(message);
+        dataList.Add(obj);
     }
 }
