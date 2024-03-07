@@ -5,13 +5,6 @@ namespace FlightRadar.Utilities;
 
 public class DataLoader : IDataLoader
 {
-    private readonly IDataFactory _dataFactory;
-
-    public DataLoader(IDataFactory dataFactory)
-    {
-        _dataFactory = dataFactory;
-    }
-
     public List<IBaseObject> LoadData(string data)
     {
         if (string.IsNullOrWhiteSpace(data))
@@ -21,10 +14,12 @@ public class DataLoader : IDataLoader
 
         var lines = data.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
+        var dataFactory = new Factories.ArrayDataFactory();
+        
         foreach (var line in lines)
         {
             var values = line.Remove(line.Length-1).Split(',', StringSplitOptions.RemoveEmptyEntries);
-            var obj = _dataFactory.CreateObject(values);
+            var obj = dataFactory.CreateObject(values);
             if (obj != null)
                 dataList.Add(obj);
         }
@@ -38,7 +33,7 @@ public class DataLoader : IDataLoader
         if (bytes.Length <= 0)
             throw new ArgumentException("Message cannot be empty.");
 
-        var dataFactory = new DataFactory();
+        var dataFactory = new Factories.MessageDataFactory();
         var obj = dataFactory.CreateObject(message);
         dataList.Add(obj);
     }
