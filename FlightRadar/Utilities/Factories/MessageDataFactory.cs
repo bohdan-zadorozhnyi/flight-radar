@@ -78,7 +78,7 @@ public class MessageDataFactory
 
         CargoPlane cargoPlane = new CargoPlane();
         cargoPlane.ID = BitConverter.ToUInt64(bytes, 7);
-        cargoPlane.Serial = Encoding.ASCII.GetString(bytes, 15, 10);
+        cargoPlane.Serial = Encoding.ASCII.GetString(bytes, 15, 10).TrimEnd('\0');
         cargoPlane.CountryISO = Encoding.ASCII.GetString(bytes, 25, 3);
         ushort modelLength = BitConverter.ToUInt16(bytes, 28);
         cargoPlane.Model = Encoding.ASCII.GetString(bytes, 30, modelLength);
@@ -135,7 +135,7 @@ public class MessageDataFactory
 
         PassengerPlane passengerPlane = new PassengerPlane();
         passengerPlane.ID = BitConverter.ToUInt64(bytes, 7);
-        passengerPlane.Serial = Encoding.ASCII.GetString(bytes, 15, 10);
+        passengerPlane.Serial = Encoding.ASCII.GetString(bytes, 15, 10).TrimEnd('\0');
         passengerPlane.CountryISO = Encoding.ASCII.GetString(bytes, 25, 3);
         ushort modelLength = BitConverter.ToUInt16(bytes, 28);
         passengerPlane.Model = Encoding.ASCII.GetString(bytes, 30, modelLength);
