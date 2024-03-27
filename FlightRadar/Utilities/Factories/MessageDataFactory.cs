@@ -2,6 +2,7 @@ using FlightRadar.Models;
 using FlightRadar.Interfaces;
 using NetworkSourceSimulator;
 using System.Text;
+using System.Globalization;
 namespace FlightRadar.Utilities.Factories;
 
 public class MessageDataFactory
@@ -156,8 +157,13 @@ public class MessageDataFactory
         flight.ID = BitConverter.ToUInt64(bytes, 7);
         flight.OriginID = BitConverter.ToUInt64(bytes, 15);
         flight.TargetID = BitConverter.ToUInt64(bytes, 23);
-        flight.TakeoffTime = DateTimeOffset.FromUnixTimeMilliseconds(BitConverter.ToInt64(bytes, 31)).UtcDateTime.ToString("HH:mm");
-        flight.LandingTime = DateTimeOffset.FromUnixTimeMilliseconds(BitConverter.ToInt64(bytes, 39)).UtcDateTime.ToString("HH:mm");
+        
+        DateTime takeoffTime = DateTimeOffset.FromUnixTimeMilliseconds(BitConverter.ToInt64(bytes, 31)).UtcDateTime;
+        DateTime landingTime = DateTimeOffset.FromUnixTimeMilliseconds(BitConverter.ToInt64(bytes, 39)).UtcDateTime;
+
+        flight.TakeoffTime = takeoffTime;
+        flight.LandingTime = landingTime;
+        
         flight.PlaneID = BitConverter.ToUInt64(bytes, 47);
 
         ushort crewCount = BitConverter.ToUInt16(bytes, 55);

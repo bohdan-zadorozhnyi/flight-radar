@@ -13,4 +13,13 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Data\example_data.ftr.txt" />
+      <EmbeddedResource Include="Data\example_data.ftr.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FlightTrackerGUI" Version="1.0.0" />
+    </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
 ﻿using FlightRadar.Interfaces;
+using System.Globalization;
 using FlightRadar.Utilities;
 
 namespace FlightRadar
@@ -7,26 +8,30 @@ namespace FlightRadar
     {
         static void Main(string[] args)
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
+            string filePath = "../../../Data/example_data.ftr.txt";
+            
             try
             {
-                string filePath = "../../../Data/example_data.ftr.txt";
-
-                Console.WriteLine("Enter minimum delay:");
-                int minDelay = int.Parse(Console.ReadLine());
-
-                Console.WriteLine("Enter maximum delay:");
-                int maxDelay = int.Parse(Console.ReadLine());
-
-                List<IBaseObject> data = new List<IBaseObject>();
-
-                NSSDataLoader.RunNSSDataLoader(filePath, minDelay, maxDelay, data);
+                string data = File.ReadAllText(filePath);
+                var dataLoader = new DataLoader();
+                var dataList = dataLoader.LoadData(data);
                 
-                CommandsProcessor commandProcessor = new CommandsProcessor(data);
-                commandProcessor.ProcessCommands();
+                var jsonSerializer = new JSONSerializer();
+                string jsonFilePath = "data.json";
+                string serializedData = jsonSerializer.Serialize(dataList);
+                File.WriteAllText(jsonFilePath, serializedData);
+                
+                FlightRadarGUIRunner test = new FlightRadarGUIRunner(dataList);
+                test.RunInterface();
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine($"File '{filePath}' not found.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred: {ex.Message}");
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
     }

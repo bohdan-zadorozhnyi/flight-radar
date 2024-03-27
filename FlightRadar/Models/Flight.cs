@@ -8,8 +8,8 @@ public class Flight : IBaseObject
     public ulong ID { get; set; }
     public ulong OriginID { get; set; }
     public ulong TargetID { get; set; }
-    public string TakeoffTime { get; set; }
-    public string LandingTime { get; set; }
+    public DateTime TakeoffTime { get; set; }
+    public DateTime LandingTime { get; set; }
     public float Longitude { get; set; }
     public float Latitude { get; set; }
     public float AMSL { get; set; }

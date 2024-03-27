@@ -1,6 +1,7 @@
 namespace FlightRadar.Utilities.Factories;
 using Models;
 using Interfaces;
+using System.Globalization;
 
 public class ArrayDataFactory
 {
@@ -139,8 +140,13 @@ public class ArrayDataFactory
         flight.ID = ulong.Parse(values[1]);
         flight.OriginID = ulong.Parse(values[2]);
         flight.TargetID = ulong.Parse(values[3]);
-        flight.TakeoffTime = values[4];
-        flight.LandingTime = values[5];
+        
+        DateTime takeoffTime = DateTime.ParseExact(values[4], "HH:mm", CultureInfo.InvariantCulture);
+        DateTime landingTime = DateTime.ParseExact(values[5], "HH:mm", CultureInfo.InvariantCulture);
+
+        flight.TakeoffTime = takeoffTime;
+        flight.LandingTime = landingTime;
+        
         flight.Longitude = Parser.FloatParse(values[6]);
         flight.Latitude = Parser.FloatParse(values[7]);
         flight.AMSL = Parser.FloatParse(values[8]);
