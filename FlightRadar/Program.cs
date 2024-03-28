@@ -8,19 +8,30 @@ namespace FlightRadar
     {
         static void Main(string[] args)
         {
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
             string filePath = "../../../Data/example_data.ftr.txt";
             
             try
             {
-                string data = File.ReadAllText(filePath);
-                var dataLoader = new DataLoader();
-                var dataList = dataLoader.LoadData(data);
+                List<IBaseObject> dataList = new List<IBaseObject>();
+                Console.WriteLine("(1) Input from file\n(2) Input from Network Source Simulation");
+                int option = int.Parse(Console.ReadLine());
                 
-                var jsonSerializer = new JSONSerializer();
-                string jsonFilePath = "data.json";
-                string serializedData = jsonSerializer.Serialize(dataList);
-                File.WriteAllText(jsonFilePath, serializedData);
+                if (option == 1)
+                {
+                    string data = File.ReadAllText(filePath);
+                    var dataLoader = new DataLoader();
+                    dataList = dataLoader.LoadData(data);
+                }
+                else if (option == 2)
+                {
+                    Console.WriteLine("Enter minimum delay:");
+                    int minDelay = int.Parse(Console.ReadLine());
+                
+                    Console.WriteLine("Enter maximum delay:");
+                    int maxDelay = int.Parse(Console.ReadLine());
+                
+                    NSSDataLoader.RunNSSDataLoader(filePath, minDelay, maxDelay, dataList);
+                }
                 
                 FlightRadarGUIRunner test = new FlightRadarGUIRunner(dataList);
                 test.RunInterface();

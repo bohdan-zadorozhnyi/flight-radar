@@ -49,7 +49,7 @@ public class FlightRadarGUIRunner
     {
         InitializeAirportMap();
 
-        var flightsGUIData = ConvertFlightDataToGUIFormat();
+        var flightsGUIData = FlightDataToGUIFormat();
         
         Runner.UpdateGUI(flightsGUIData);
     }
@@ -77,7 +77,7 @@ public class FlightRadarGUIRunner
         }
     }
     
-    private FlightsGUIData ConvertFlightDataToGUIFormat()
+    private FlightsGUIData FlightDataToGUIFormat()
     {
         List<IBaseObject> snapshot;
         lock (_flightData)
@@ -86,15 +86,14 @@ public class FlightRadarGUIRunner
         }
 
         var flights = DataExtractor.ExtractFlights(snapshot);
-
         List<FlightGUI> flightGUIs = new List<FlightGUI>();
-        DateTime now = DateTime.UtcNow;
+        DateTime now = DateTime.UtcNow.AddHours(1);
         
         foreach (var flight in flights)
         {
             DateTime takeoffTime = flight.TakeoffTime;
             DateTime landingTime = flight.LandingTime;
-
+            
             if (takeoffTime <= now && landingTime >= now)
             {
                 if (_airportMap.TryGetValue(flight.OriginID, out Airport origin) &&
@@ -112,7 +111,6 @@ public class FlightRadarGUIRunner
                 }
             }
         }
-
         return new FlightsGUIData(flightGUIs);
     }
     
@@ -138,11 +136,7 @@ public class FlightRadarGUIRunner
             target.Longitude,
             target.Latitude
         );
-        double num = Math.Atan2(tuple2.y - tuple1.y, tuple1.x - tuple2.x) + Math.PI / 2;
-        if (num >= 0.0)
-        {
-            num += Math.PI;
-        }
+        double num = Math.Atan2(tuple2.y - tuple1.y, tuple1.x - tuple2.x) - Math.PI / 2;
 
         return num;
     }

@@ -160,7 +160,9 @@ public class MessageDataFactory
         
         DateTime takeoffTime = DateTimeOffset.FromUnixTimeMilliseconds(BitConverter.ToInt64(bytes, 31)).UtcDateTime;
         DateTime landingTime = DateTimeOffset.FromUnixTimeMilliseconds(BitConverter.ToInt64(bytes, 39)).UtcDateTime;
-
+        if (landingTime < takeoffTime)
+            landingTime = landingTime.AddDays(1);
+        
         flight.TakeoffTime = takeoffTime;
         flight.LandingTime = landingTime;
         

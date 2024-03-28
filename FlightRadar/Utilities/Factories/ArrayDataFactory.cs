@@ -143,7 +143,9 @@ public class ArrayDataFactory
         
         DateTime takeoffTime = DateTime.ParseExact(values[4], "HH:mm", CultureInfo.InvariantCulture);
         DateTime landingTime = DateTime.ParseExact(values[5], "HH:mm", CultureInfo.InvariantCulture);
-
+        if (landingTime < takeoffTime)
+            landingTime = landingTime.AddDays(1);
+            
         flight.TakeoffTime = takeoffTime;
         flight.LandingTime = landingTime;
         
