@@ -6,8 +6,6 @@ public class NewsGenerator
 {
     private readonly List<INewsProvider> _newsProviders;
     private readonly List<IReportable> _reportables;
-    private int _currentProviderIndex = 0;
-    private int _currentReportableIndex = 0;
 
     public NewsGenerator(List<INewsProvider> newsProviders, List<IReportable> reportables)
     {
@@ -17,35 +15,22 @@ public class NewsGenerator
     
     public void GenerateAllNews()
     {
-        string newsPiece;
-        while ((newsPiece = GenerateNextNews()) != null)
+        foreach (var newsPiece in GenerateNextNews())
         {
             Console.WriteLine(newsPiece);
         }
-        
-        _currentProviderIndex = 0;
-        _currentReportableIndex = 0;
     }
-
-    public string GenerateNextNews()
+    
+    public IEnumerable<string> GenerateNextNews()
     {
-        if (_currentProviderIndex < _newsProviders.Count && _currentReportableIndex < _reportables.Count)
+        foreach (var newsProvider in _newsProviders)
         {
-            var newsProvider = _newsProviders[_currentProviderIndex];
-            var reportable = _reportables[_currentReportableIndex];
-            var newsPiece = reportable.Accept(newsProvider);
-
-            _currentReportableIndex++;
-            if (_currentReportableIndex >= _reportables.Count)
+            foreach (var reportable in _reportables)
             {
-                _currentReportableIndex = 0;
-                _currentProviderIndex++;
+                var newsPiece = reportable.Accept(newsProvider);
+                yield return newsPiece;
             }
-
-            return newsPiece;
         }
-
-        return null;
     }
     
     public static List<INewsProvider> CreateNewsProvidersList()
