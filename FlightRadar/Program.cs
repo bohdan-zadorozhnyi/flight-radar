@@ -8,7 +8,7 @@ namespace FlightRadar
     {
         static void Main(string[] args)
         {
-            string filePath = "../../../Data/example_data.ftr.txt";
+            string filePath = "Data/example_data.ftr";
             
             try
             {
