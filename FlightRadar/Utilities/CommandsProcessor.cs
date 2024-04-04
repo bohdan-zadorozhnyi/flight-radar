@@ -16,7 +16,7 @@ public class CommandsProcessor
     {
         while (true)
         {
-            Console.WriteLine("Enter a command ('print' or 'exit'): ");
+            Console.WriteLine("Enter a command ('print', 'report' or 'exit'): ");
             string command = Console.ReadLine();
             
             if (string.IsNullOrWhiteSpace(command))
@@ -29,6 +29,9 @@ public class CommandsProcessor
             {
                 case "print":
                     CreateSnapshot();
+                    break;
+                case "report":
+                    GenerateReport();
                     break;
                 case "exit":
                     Environment.Exit(0);
@@ -53,6 +56,27 @@ public class CommandsProcessor
         catch (Exception ex)
         {
             Console.WriteLine($"Error occurred while serializing data: {ex.Message}");
+        }
+    }
+
+    private void GenerateReport()
+    {
+        try
+        {
+            List<IBaseObject> snapshot;
+            lock (data)
+            {
+                snapshot = data;
+            }
+            
+            var newsProviders = NewsGenerator.CreateNewsProvidersList();
+            var reportables = DataExtractor.ExtractReportables(snapshot);
+            var newsGenerator = new NewsGenerator(newsProviders, reportables);
+            newsGenerator.GenerateAllNews();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error occurred while generating a report: {ex.Message}");
         }
     }
 }

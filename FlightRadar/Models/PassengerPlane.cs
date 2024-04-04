@@ -1,5 +1,5 @@
-using FlightRadar.Interfaces;
 namespace FlightRadar.Models;
+using Interfaces;
 
 public class PassengerPlane : IBaseObject
 {
@@ -17,4 +17,6 @@ public class PassengerPlane : IBaseObject
                $"First Class Size: {FirstClassSize}, Business Class Size: {BusinessClassSize}, " +
                $"Economy Class Size: {EconomyClassSize}";
     }
+    
+    public string Accept(INewsProvider visitor) => visitor.VisitPassengerPlane(this);
 }

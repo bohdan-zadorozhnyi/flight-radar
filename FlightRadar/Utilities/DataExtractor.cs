@@ -13,4 +13,9 @@ public static class DataExtractor
     {
         return objects.OfType<Airport>().ToList();
     }
+    
+    public static List<IReportable> ExtractReportables(List<IBaseObject> flightData)
+    {
+        return flightData.OfType<IReportable>().ToList();
+    }
 }

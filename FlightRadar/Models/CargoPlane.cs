@@ -1,8 +1,7 @@
-using FlightRadar.Interfaces;
-using FlightRadar.Utilities;
 namespace FlightRadar.Models;
+using Interfaces;
 
-public class CargoPlane : IBaseObject
+public class CargoPlane : IBaseObject, IReportable
 {
     public string Type { get => "CP"; set {} }
     public ulong ID { get; set; }
@@ -14,4 +13,6 @@ public class CargoPlane : IBaseObject
     {
         return $"CargoPlane ID: {ID}, Serial: {Serial}, Country ISO: {CountryISO}, Model: {Model}, MaxLoad: {MaxLoad}";
     }
+    
+    public string Accept(INewsProvider visitor) => visitor.VisitCargoPlane(this);
 }

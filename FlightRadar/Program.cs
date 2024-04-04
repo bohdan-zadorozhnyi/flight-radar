@@ -1,5 +1,4 @@
 ﻿using FlightRadar.Interfaces;
-using System.Globalization;
 using FlightRadar.Utilities;
 
 namespace FlightRadar
@@ -13,25 +12,25 @@ namespace FlightRadar
             try
             {
                 List<IBaseObject> dataList = new List<IBaseObject>();
-                Console.WriteLine("(1) Input from file\n(2) Input from Network Source Simulation");
-                int option = int.Parse(Console.ReadLine());
                 
-                if (option == 1)
+                Console.WriteLine("Enter minimum delay:");
+                int minDelay = int.Parse(Console.ReadLine());
+                
+                Console.WriteLine("Enter maximum delay:");
+                int maxDelay = int.Parse(Console.ReadLine());
+                
+                NSSDataLoader.RunNSSDataLoader(filePath, minDelay, maxDelay, dataList);
+                
+                CommandsProcessor commandProcessor = new CommandsProcessor(dataList);
+                
+                Thread tmp = new Thread(async () =>
                 {
-                    string data = File.ReadAllText(filePath);
-                    var dataLoader = new DataLoader();
-                    dataList = dataLoader.LoadData(data);
-                }
-                else if (option == 2)
+                    commandProcessor.ProcessCommands();
+                })
                 {
-                    Console.WriteLine("Enter minimum delay:");
-                    int minDelay = int.Parse(Console.ReadLine());
-                
-                    Console.WriteLine("Enter maximum delay:");
-                    int maxDelay = int.Parse(Console.ReadLine());
-                
-                    NSSDataLoader.RunNSSDataLoader(filePath, minDelay, maxDelay, dataList);
-                }
+                    IsBackground = true
+                };
+                tmp.Start();
                 
                 FlightRadarGUIRunner test = new FlightRadarGUIRunner(dataList);
                 test.RunInterface();
