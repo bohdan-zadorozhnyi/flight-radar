@@ -97,7 +97,7 @@ public class NSSDataLoader
             }
             catch (Exception ex)
             {
-                logger.LogChange($"Failed to update object ID: {args.ObjectID} - Error: {ex.Message}");
+                logger.LogChange($"Failed to update position for object ID: {args.ObjectID} - Error: {ex.Message}");
             }
         }
     }
@@ -126,7 +126,7 @@ public class NSSDataLoader
             }
             catch (Exception ex)
             {
-                logger.LogChange($"Failed to update object ID: {args.ObjectID} - Error: {ex.Message}");
+                logger.LogChange($"Failed to update contact info for object ID: {args.ObjectID} - Error: {ex.Message}");
             }
         }
     }
