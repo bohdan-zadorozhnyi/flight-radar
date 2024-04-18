@@ -1,7 +1,7 @@
 namespace FlightRadar.Models;
 using Interfaces;
 
-public class Airport : IBaseObject, IReportable
+public class Airport : IBaseObject, IReportable, IIDUpdateable, IPositionUpdateable
 {
     public string Type { get => "AI"; set { } }
     public ulong ID { get; set; }
@@ -19,4 +19,16 @@ public class Airport : IBaseObject, IReportable
     }
 
     public string Accept(INewsProvider visitor) => visitor.VisitAirport(this);
+    
+    public void UpdateID(ulong newID)
+    {
+        this.ID = newID;
+    }
+    
+    public void UpdatePosition(float longitude, float latitude, float amsl)
+    {
+        this.Longitude = longitude;
+        this.Latitude = latitude;
+        this.AMSL = amsl;
+    }
 }

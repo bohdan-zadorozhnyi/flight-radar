@@ -1,5 +1,6 @@
 using System.Text;
 using FlightRadar.Interfaces;
+using FlightRadar.Models;
 using NetworkSourceSimulator;
 namespace FlightRadar.Utilities;
 
@@ -24,6 +25,8 @@ public class DataLoader : IDataLoader
                 dataList.Add(obj);
         }
 
+        DataUpdater.UpdateFlights(dataList);
+
         return dataList;
     }
     
@@ -36,5 +39,15 @@ public class DataLoader : IDataLoader
         var dataFactory = new Factories.MessageDataFactory();
         var obj = dataFactory.CreateObject(message);
         dataList.Add(obj);
+        
+        if (obj is Flight flight)
+        {
+            flight.CrewMembers = DataExtractor.FetchCrewMembersByIds(flight.CrewIDs, dataList);
+            flight.Loads = DataExtractor.FetchLoadsByIds(flight.LoadIDs, dataList);
+        }
+        else if (obj is Crew || obj is ILoad)
+        {
+            DataUpdater.UpdateFlights(dataList);
+        }
     }
 }

@@ -1,7 +1,7 @@
 namespace FlightRadar.Models;
 using Interfaces;
 
-public class CargoPlane : IBaseObject, IReportable
+public class CargoPlane : IBaseObject, IReportable, IIDUpdateable
 {
     public string Type { get => "CP"; set {} }
     public ulong ID { get; set; }
@@ -15,4 +15,9 @@ public class CargoPlane : IBaseObject, IReportable
     }
     
     public string Accept(INewsProvider visitor) => visitor.VisitCargoPlane(this);
+    
+    public void UpdateID(ulong newID)
+    {
+        this.ID = newID;
+    }
 }

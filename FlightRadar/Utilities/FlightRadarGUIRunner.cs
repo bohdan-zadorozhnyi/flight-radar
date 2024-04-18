@@ -11,6 +11,7 @@ public class FlightRadarGUIRunner
     {
         lock (flightData)
         {
+            DataUpdater.UpdateFlightsInitialPosition(flightData);
             this._flightData = flightData;
         }
 
@@ -29,6 +30,7 @@ public class FlightRadarGUIRunner
         Thread updateThread = new Thread(async () =>
         {
             PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+            
             while (await timer.WaitForNextTickAsync())
             {
                 UpdateFlightsGUIData();

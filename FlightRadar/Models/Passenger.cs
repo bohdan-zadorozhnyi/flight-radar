@@ -1,7 +1,7 @@
 using FlightRadar.Interfaces;
 namespace FlightRadar.Models;
 
-public class Passenger : IBaseObject
+public class Passenger : IBaseObject, IIDUpdateable, IContactInfoUpdateable, ILoad
 {
     public string Type { get => "P"; set {} }
     public ulong ID { get; set; }
@@ -15,5 +15,16 @@ public class Passenger : IBaseObject
     public override string ToString()
     {
         return $"Passenger ID: {ID}, Name: {Name}, Age: {Age}, Phone: {Phone}, Email: {Email}, Class: {Class}, Miles: {Miles}";
+    }
+    
+    public void UpdateID(ulong newID)
+    {
+        this.ID = newID;
+    }
+    
+    public void UpdateContactInfo(string phoneNumber, string emailAddress)
+    {
+        this.Phone = phoneNumber;
+        this.Email = emailAddress;
     }
 }

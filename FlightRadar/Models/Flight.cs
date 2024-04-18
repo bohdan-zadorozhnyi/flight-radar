@@ -1,8 +1,7 @@
 using FlightRadar.Interfaces;
-using FlightRadar.Utilities;
 namespace FlightRadar.Models;
 
-public class Flight : IBaseObject
+public class Flight : IBaseObject, IIDUpdateable, IPositionUpdateable
 {
     public string Type { get => "FL"; set {} }
     public ulong ID { get; set; }
@@ -16,6 +15,8 @@ public class Flight : IBaseObject
     public ulong PlaneID { get; set; }
     public List<ulong> CrewIDs { get; set; }
     public List<ulong> LoadIDs { get; set; }
+    public List<Crew> CrewMembers { get; set; }
+    public List<ILoad> Loads { get; set; }
 
     public override string ToString()
     {
@@ -25,5 +26,17 @@ public class Flight : IBaseObject
         return $"Flight ID: {ID}, Origin ID: {OriginID}, Target ID: {TargetID}, Takeoff Time: {TakeoffTime}, " +
                $"Landing Time: {LandingTime}, Longitude: {Longitude}, Latitude: {Latitude}, AMSL: {AMSL}, " +
                $"Plane ID: {PlaneID}, Crew IDs: {crewIDsString}, Load IDs: {loadIDsString}";
+    }
+    
+    public void UpdateID(ulong newID)
+    {
+        this.ID = newID;
+    }
+    
+    public void UpdatePosition(float longitude, float latitude, float amsl)
+    {
+        this.Longitude = longitude;
+        this.Latitude = latitude;
+        this.AMSL = amsl;
     }
 }

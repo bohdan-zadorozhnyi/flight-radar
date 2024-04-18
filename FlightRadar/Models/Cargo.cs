@@ -2,7 +2,7 @@ using FlightRadar.Interfaces;
 using FlightRadar.Utilities;
 namespace FlightRadar.Models;
 
-public class Cargo : IBaseObject
+public class Cargo : IBaseObject, IIDUpdateable, ILoad
 {
     public string Type { get => "CA"; set {} }
     public ulong ID { get; set; }
@@ -12,5 +12,10 @@ public class Cargo : IBaseObject
     public override string ToString()
     {
         return $"Cargo ID: {ID}, Weight: {Weight}, Code: {Code}, Description: {Description}";
+    }
+    
+    public void UpdateID(ulong newID)
+    {
+        this.ID = newID;
     }
 }
