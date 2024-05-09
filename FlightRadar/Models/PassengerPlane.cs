@@ -1,7 +1,7 @@
 namespace FlightRadar.Models;
 using Interfaces;
 
-public class PassengerPlane : IBaseObject, IIDUpdateable
+public class PassengerPlane : IBaseObject, IIDUpdateable, IPlane
 {
     public string Type { get => "PP"; set {} }
     public ulong ID { get; set; }

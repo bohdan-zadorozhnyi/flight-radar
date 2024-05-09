@@ -1,5 +1,6 @@
-using FlightRadar.Interfaces;
 namespace FlightRadar.Models;
+using Interfaces;
+using Structures;
 
 public class Flight : IBaseObject, IIDUpdateable, IPositionUpdateable
 {
@@ -17,6 +18,7 @@ public class Flight : IBaseObject, IIDUpdateable, IPositionUpdateable
     public List<ulong> LoadIDs { get; set; }
     public List<Crew> CrewMembers { get; set; }
     public List<ILoad> Loads { get; set; }
+    public WorldPosition Position => WorldPosition.ConstructWorldPosition(Latitude, Longitude);
 
     public override string ToString()
     {

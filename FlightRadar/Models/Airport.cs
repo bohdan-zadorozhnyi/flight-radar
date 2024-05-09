@@ -1,5 +1,6 @@
 namespace FlightRadar.Models;
 using Interfaces;
+using Structures;
 
 public class Airport : IBaseObject, IReportable, IIDUpdateable, IPositionUpdateable
 {
@@ -11,6 +12,13 @@ public class Airport : IBaseObject, IReportable, IIDUpdateable, IPositionUpdatea
     public float Latitude { get; set; }
     public float AMSL { get; set; }
     public string CountryISO { get; set; }
+    public WorldPosition Position
+    {
+        get
+        {
+            return WorldPosition.ConstructWorldPosition(Latitude, Longitude);
+        }
+    }
 
     public override string ToString()
     {

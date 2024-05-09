@@ -1,8 +1,7 @@
-using System.Text;
-using FlightRadar.Interfaces;
-using FlightRadar.Models;
-using NetworkSourceSimulator;
 namespace FlightRadar.Utilities;
+using Interfaces;
+using Models;
+using NetworkSourceSimulator;
 
 public class DataLoader : IDataLoader
 {
